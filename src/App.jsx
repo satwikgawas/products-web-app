@@ -12,14 +12,9 @@ const App = () => {
   }, [])
 
   const fetchProducts = async () => {
-    try {
-      const response = await fetch(`https://products-api-4b3u.onrender.com/products?cacheBust=${Date.now()}`)
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
-      const data = await response.json()
-      setProducts(data)
-    } catch (error) {
-      console.error("Failed to fetch products:", error)
-    }
+    const response = await fetch(`https://products-api-4b3u.onrender.com/products`)
+    const data = await response.json()
+    setProducts(data)
   }
 
   const handleSubmit = async (e) => {
