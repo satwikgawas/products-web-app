@@ -6,6 +6,7 @@ const App = () => {
   const [price, setPrice] = useState("")
   const [category, setCategory] = useState("")
   const [editingProduct, setEditingProduct] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     fetchProducts()
@@ -19,7 +20,11 @@ const App = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    if (!productName || !price || !category) {
+      setError(true)
+      return
+    }
+    setError(false)
     const newProduct = { productName, price, category }
 
     if (editingProduct) {
@@ -68,15 +73,24 @@ const App = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label className="form-label">Product Name</label>
-              <input type="text" className="form-control" value={productName} onChange={(e) => setProductName(e.target.value)} required />
+              <input type="text" className="form-control" value={productName} onChange={(e) => setProductName(e.target.value)} />
+              {error && !productName && (
+                <div className="text-danger">Product name is required</div>
+              )}
             </div>
             <div className="mb-3">
               <label className="form-label">Price</label>
-              <input type="number" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} required />
+              <input type="number" className="form-control" value={price} onChange={(e) => setPrice(e.target.value)} />
+              {error && !price && (
+                <div className="text-danger">Product price is required</div>
+              )}
             </div>
             <div className="mb-3">
               <label className="form-label">Category</label>
-              <input type="text" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} required />
+              <input type="text" className="form-control" value={category} onChange={(e) => setCategory(e.target.value)} />
+              {error && !category && (
+                <div className="text-danger">Product category is required</div>
+              )}
             </div>
             <button type="submit" className="btn btn-primary me-2">
               {editingProduct ? "Update Product" : "Add Product"}
